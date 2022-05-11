@@ -2,14 +2,14 @@
 #include <cstring>
 #include "encryption.cpp"
 
-uint32_t get_file_size(FILE *fp){
+uint32_t get_file_size(FILE *fp) {
     fseek(fp, 0, SEEK_END);
     uint32_t file_size = ftell(fp);
     fseek(fp, 0, SEEK_SET);
     return file_size;
 }
 
-uint32_t key_verification(FILE* key_file, uint8_t *my_key){
+uint32_t key_verification(FILE* key_file, uint8_t *my_key) {
     if(get_file_size(key_file) != KEY_SIZE_IN_BYTES){
         std::cout << "Incorrect length of key!" << std::endl;
         return -1;

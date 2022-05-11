@@ -66,16 +66,16 @@ uint8_t SBOX4(uint8_t index) {
 }
 
 void swap(uint64_t *first, uint64_t *second) {
-    uint64_t tmp = *first;
+    uint64_t temp = *first;
     *first = *second;
-    *second = tmp;
+    *second = temp;
 }
 
-uint64_t F(uint64_t F_IN, uint64_t KE) {
-    uint64_t F_OUT = 0;
+uint64_t F(uint64_t data, uint64_t key) {
+    uint64_t new_data = 0;
     uint8_t t[8], y[8];
 
-    uint64_t x = F_IN ^ KE;
+    uint64_t x = data ^ key;
 
     t[0] = SBOX1(x >> 56);
     t[1] = SBOX2(x >> 48);
@@ -96,37 +96,37 @@ uint64_t F(uint64_t F_IN, uint64_t KE) {
     y[7] = t[0] ^ t[3] ^ t[4] ^ t[5] ^ t[6];
 
     for(int i = 0; i < 7; i++)
-        F_OUT = (F_OUT | y[i]) << 8;
-    F_OUT |= y[7];
-    return F_OUT;
+        new_data = (new_data | y[i]) << 8;
+    new_data |= y[7];
+    return new_data;
 }
 
-uint64_t FL(uint64_t FL_IN, uint64_t KE) {
-    uint64_t FL_OUT = 0;
+uint64_t FL(uint64_t data, uint64_t key) {
+    uint64_t new_data = 0;
     uint32_t k1, k2, x1, x2;
-    x1 = FL_IN >> 32;
-    x2 = FL_IN & 0xffffffff;
-    k1 = KE >> 32;
-    k2 = KE & 0xffffffff;
+    x1 = data >> 32;
+    x2 = data & 0xffffffff;
+    k1 = key >> 32;
+    k2 = key & 0xffffffff;
     x2 = x2 ^ ((x1 & k1) >> 31 | (x1 & k1) << 1);
     x1 = x1 ^ (x2 | k2);
 
-    FL_OUT = ((FL_OUT | x1) << 32) | x2;
-    return FL_OUT;
+    new_data = ((new_data | x1) << 32) | x2;
+    return new_data;
 }
 
-uint64_t FLINV(uint64_t FLINV_IN, uint64_t key) {
-    uint64_t FLINV_OUT = 0;
-    uint32_t k1, k2, y1, y2;
-    y1 = FLINV_IN >> 32;
-    y2 = FLINV_IN & 0xffffffff;
+uint64_t FLINV(uint64_t data, uint64_t key) {
+    uint64_t new_data = 0;
+    uint32_t k1, k2, x1, x2;
+    x1 = data >> 32;
+    x2 = data & 0xffffffff;
     k1 = key >> 32;
     k2 = key & 0xffffffff;
-    y1 = y1 ^ (y2 | k2);
-    y2 = y2 ^ ((y1 & k1) >> 31 | (y1 & k1) << 1);
+    x1 = x1 ^ (x2 | k2);
+    x2 = x2 ^ ((x1 & k1) >> 31 | (x1 & k1) << 1);
 
-    FLINV_OUT = ((FLINV_OUT | y1) << 32) | y2;
-    return FLINV_OUT;
+    new_data = ((new_data | x1) << 32) | x2;
+    return new_data;
 }
 
 void swap_keys(subkeys *ptr) {
