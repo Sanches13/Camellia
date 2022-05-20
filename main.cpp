@@ -68,11 +68,11 @@ int main(int argc, char* argv[]) {
 
     std::cout << "Start encrypting/decrypting the file..." << std::endl;
     if(strcmp(argv[4], ENCRYPTION_MODE) == 0)
-        fprintf(output, "%u", (BLOCK_SIZE_IN_BYTES - (file_size % BLOCK_SIZE_IN_BYTES)) % BLOCK_SIZE_IN_BYTES);
+        fprintf(output, "%c", (BLOCK_SIZE_IN_BYTES - (file_size % BLOCK_SIZE_IN_BYTES)) % BLOCK_SIZE_IN_BYTES);
     else {
         uint8_t elem;
         fscanf(input, "%c", &elem);
-        file_size = file_size - 1 - (elem - 0x30);
+        file_size = file_size - 1 - elem;
     }
 
     uint32_t num_of_blocks;
