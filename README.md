@@ -1,6 +1,6 @@
-## Camellia file encryptor
+# Camellia file encryptor with 256-bit key
 
-### How to start a program
+## How to start a program
 
 ```bash
 make
