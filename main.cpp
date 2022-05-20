@@ -89,7 +89,7 @@ int main(int argc, char* argv[]) {
         memset(plaintext, 0, BLOCK_SIZE_IN_BYTES);
         memset(ciphertext, 0, BLOCK_SIZE_IN_BYTES);
 
-        for(int i = 0; i < BLOCK_SIZE_IN_BYTES && i < file_size; i++)
+        for(int i = 0; i < BLOCK_SIZE_IN_BYTES && (i < file_size || k == 0); i++)
             fscanf(input, "%c", &plaintext[i]);
 
         encryption(plaintext, ciphertext, &ptr);
